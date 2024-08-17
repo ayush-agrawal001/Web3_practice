@@ -8,8 +8,7 @@ const masterSeed = mnemonicToSeedSync(Mnemonic); //this is the first seed(top mo
 
 //Derivation paths specify a systematic way to derive various keys from the master seed.
 const derivedSeed = derivePath("m/44'/501'/0'/0'", masterSeed.toString("hex")).key;
-// derivedSeed is the secretKey to get the public key and pvtKey
-
+// derivedSeed is the seed to get the public key and pvtKey
 
 const myKeyPair = Keypair.fromSeed(derivedSeed) // generated keypair from the seed 32byte size
 
