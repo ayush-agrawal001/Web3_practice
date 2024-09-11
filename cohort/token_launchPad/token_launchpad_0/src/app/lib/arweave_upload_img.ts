@@ -1,4 +1,3 @@
-
 import * as sec_guy from "./sec.json" 
 
 export default async function uploadImage(formData : FormData){

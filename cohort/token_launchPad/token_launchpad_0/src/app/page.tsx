@@ -16,10 +16,9 @@ export default function Home(
 ) {
   return (
     <main >
-      <div  className="border rounded flex justify-around">
-              <WalletConnectButton></WalletConnectButton>
-              <WalletModalButton></WalletModalButton>
-              <WalletDisconnectButton></WalletDisconnectButton>
+      <div  className="shadow-sm mt-2 rounded flex justify-around">
+              <WalletModalButton className="bg-gray-50 rounded-xl font-mono text-sm"></WalletModalButton>
+              <WalletDisconnectButton className="bg-gray-50 rounded-xl font-mono text-sm"></WalletDisconnectButton>
     </div>
     <TokenForm></TokenForm>
   </main>

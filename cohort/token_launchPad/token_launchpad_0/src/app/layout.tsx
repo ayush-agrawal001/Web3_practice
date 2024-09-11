@@ -1,5 +1,6 @@
 import "./globals.css";
 import AppWalletProvider from "./components/AppWalletProvider";
+import SideNavBar from "./components/sideNavBar";
 
 export default function RootLayout({
   children,
@@ -8,7 +9,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>
+      <body className="flex justify-center">
+        <SideNavBar></SideNavBar>
         <AppWalletProvider>{children}</AppWalletProvider>
       </body>
     </html>
