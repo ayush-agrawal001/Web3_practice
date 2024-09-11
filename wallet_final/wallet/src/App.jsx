@@ -24,7 +24,7 @@ function App(){
     const derivedSeed = derivePath("m/44'/501'/0'/0'", masterSeed.toString("hex")).key
     const myKeyPair = Keypair.fromSeed(derivedSeed)
     console.log(myKeyPair);
-    setSOLPubKey(myKeyPair.publicKey.toString())
+    setSOLPubKey(myKeyPair.publicKey.toBase58())
     setSOLPvtKey(bs58.encode(myKeyPair.secretKey)) // this is only the pvt key
   }
 
@@ -34,7 +34,7 @@ function App(){
     const myKeyPair = Keypair.fromSeed(derivedSeed)
     const pubKey = myKeyPair.publicKey.toBuffer()
     setETHPubKey(keccak256(pubKey)) // doesnot require substring(24) or removing last 20 bytes(pack. feature) 
-    setETHPvtKey(bs58.encode(myKeyPair.secretKey))
+    setETHPvtKey(keccak256(myKeyPair.secretKey))
   }
 
   return (
