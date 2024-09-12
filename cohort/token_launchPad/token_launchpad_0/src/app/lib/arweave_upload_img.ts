@@ -1,4 +1,5 @@
 import * as sec_guy from "./sec.json" 
+import "dotenv/config"
 
 export default async function uploadImage(formData : FormData){
     const data = formData.get("image") as File
@@ -10,7 +11,7 @@ export default async function uploadImage(formData : FormData){
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
-                'Api-Key': sec_guy.API_KEY,
+                'Api-Key': process.env.API_KEY,
                 'Content-Type': 'image/png'
             },
             body: new Uint8Array(buff)

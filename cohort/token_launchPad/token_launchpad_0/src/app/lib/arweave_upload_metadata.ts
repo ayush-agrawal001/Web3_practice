@@ -1,3 +1,4 @@
+import "dotenv/config"
 
 import * as sec_guy from "./sec.json" 
 
@@ -14,7 +15,7 @@ export default async function metadataJson(name : string, symbol : string, descr
         method: 'POST',
         headers: {
             'Accept': 'application/json',
-            'Api-Key': sec_guy.API_KEY,
+            'Api-Key': process.env.API_KEY,
             'Content-Type': 'text/plain'
         },
         body: JSON.stringify(data)
