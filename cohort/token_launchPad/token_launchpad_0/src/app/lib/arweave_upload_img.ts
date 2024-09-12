@@ -19,7 +19,7 @@ export default async function uploadImage(formData : FormData){
         const result = await response.json()        
 
         if (response.status === 201 || response.status === 200 ){
-            resolve({success : result.tx.viewblockUrl})
+            resolve({success : result.tx.gatewayUrls})
         }else{
             reject({error : "Upload Failed"})
         }

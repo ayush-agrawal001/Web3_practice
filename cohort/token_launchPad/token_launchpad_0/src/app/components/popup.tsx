@@ -20,7 +20,7 @@ interface popUpProps{
     extraTags : ReactNode
 }
 
-export const popUp : React.FC<popUpProps> = ({buttonTrigger, styleOfContent, styleOfHeader, title, description, extraTags}) => {
+export const PopUp : React.FC<popUpProps> = ({buttonTrigger, styleOfContent, styleOfHeader, title, description, extraTags}) => {
     return(
         <>
             <Dialog>
@@ -34,7 +34,6 @@ export const popUp : React.FC<popUpProps> = ({buttonTrigger, styleOfContent, sty
                         {description}
                     </DialogDescription>
                     {extraTags}
-                    <UploadImagePop />
                     </DialogHeader>
                 </DialogContent>
             </Dialog>

@@ -4,16 +4,10 @@ import React, { ReactNode, useState } from "react";
 import { FaCoins } from "react-icons/fa";
 import { RiUploadCloud2Fill } from "react-icons/ri";
 import { RiExchange2Fill } from "react-icons/ri";
-import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
-  } from "@/components/ui/dialog"
+
 import UploadImagePop from "./uploadImage";
 import { cn } from "@/lib/utils";
+import { PopUp } from "./popup";
 
 
 
@@ -26,22 +20,21 @@ export default function SideNavBar(){
 
             <SideBarIcons icon = {<FaCoins size={30} />} tooltip="Create Token"/>
             
-            <Dialog>
-                <DialogTrigger>
-                    <SideBarIcons icon = {<RiUploadCloud2Fill size={30}/>} tooltip="Upload to arweave"/>
-                </DialogTrigger>
-                <DialogContent className={cn("h-3/5 w-4/5 text-3xl flex ")}>
-                    <DialogHeader className={cn("text-3xl ")}>
-                    <DialogTitle>Upload your Image in arweave permanent storage</DialogTitle>
-                    <DialogDescription>
-                        This action cannot be undone. This will permanently upload your image.
-                    </DialogDescription>
-                    <UploadImagePop />
-                    </DialogHeader>
-                </DialogContent>
-            </Dialog>
-
-            <SideBarIcons icon = {<RiExchange2Fill size={30} />} tooltip="Liquidity pool"/>
+            <PopUp buttonTrigger={<SideBarIcons icon = {<RiUploadCloud2Fill size={30}/>} tooltip="Upload to arweave"/>}
+                styleOfContent = {cn("h-4/5 w-4/5 ")}
+                styleOfHeader = {cn("text-2xl")}
+                title = "Upload your Image in arweave permanent storage"
+                description = "This action cannot be undone. This will permanently upload your image."
+                extraTags = {<UploadImagePop />}
+                ></PopUp>
+            
+            <PopUp 
+            buttonTrigger = {<SideBarIcons icon = {<RiExchange2Fill size={30} />} tooltip="Liquidity pool"/>}
+            styleOfContent = {cn("")}
+            styleOfHeader = {cn("")}
+            title = "Coming soon..."
+            description = "Play around with minting your token"
+            ></PopUp>
         </div>
 
     )

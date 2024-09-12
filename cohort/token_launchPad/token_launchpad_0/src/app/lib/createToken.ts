@@ -3,13 +3,13 @@ import { createAssociatedTokenAccountInstruction, createInitializeMetadataPointe
 import { createInitializeInstruction ,pack } from "@solana/spl-token-metadata"
 
 // createToken is the derived function of createMint where we are signing the transaction with wallet of the user 
-async function createToken(wallet : any , connection : any) {
+async function createToken(wallet : any , connection : any, name : string, symbol : string, uri : any, decimals : number, supply : number) {
     const mintKeypair = Keypair.generate();
     const metadata = {
         mint: mintKeypair.publicKey,
-        name: 'KIRA',
-        symbol: 'KIR    ',
-        uri: 'https://cdn.100xdevs.com/metadata.json',
+        name: name.toUpperCase(),
+        symbol: symbol.toUpperCase(),
+        uri: String(uri),
         additionalMetadata: [],
     };
 
@@ -27,7 +27,7 @@ async function createToken(wallet : any , connection : any) {
             programId: TOKEN_2022_PROGRAM_ID,
         }),
         createInitializeMetadataPointerInstruction(mintKeypair.publicKey, wallet.publicKey, mintKeypair.publicKey, TOKEN_2022_PROGRAM_ID),
-        createInitializeMintInstruction(mintKeypair.publicKey, 9, wallet.publicKey, null, TOKEN_2022_PROGRAM_ID),
+        createInitializeMintInstruction(mintKeypair.publicKey, decimals, wallet.publicKey, null, TOKEN_2022_PROGRAM_ID),
         createInitializeInstruction({
             programId: TOKEN_2022_PROGRAM_ID,
             mint: mintKeypair.publicKey,
@@ -69,12 +69,15 @@ async function createToken(wallet : any , connection : any) {
     await wallet.sendTransaction(transaction2, connection);
 
     const transaction3 = new Transaction().add(
-        createMintToInstruction(mintKeypair.publicKey, associatedToken, wallet.publicKey, 1000000000, [], TOKEN_2022_PROGRAM_ID)
+        createMintToInstruction(mintKeypair.publicKey, associatedToken, wallet.publicKey, supply * Math.pow(10, decimals), [], TOKEN_2022_PROGRAM_ID)
     );
 
     await wallet.sendTransaction(transaction3, connection);
 
+    const mintPublicKey = mintKeypair.publicKey.toBase58()
+    console.log(`token mint public key`, mintKeypair.publicKey.toBase58())
     console.log("Minted!")
+    return mintPublicKey
 }
 
 export default createToken;

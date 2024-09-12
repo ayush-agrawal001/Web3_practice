@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import createToken from "../lib/createToken"
 import { useConnection, useWallet } from "@solana/wallet-adapter-react"
-
+import {RingLoader} from "react-spinners"
 import metadataJson from "../lib/arweave_upload_metadata"
 import { FaStar } from "react-icons/fa";
 
@@ -13,49 +13,69 @@ export const TokenForm = () => {
     const [supply, setSupply] = useState(1);
     const [description, setDescription] = useState("");
     const [imageUrl, setImageUrl] = useState("");
-
-
+    const [pubKey, setPubKey] = useState("");
+    const [loading, setLoading] = useState(false)
     const { connection } = useConnection()
     const wallet = useWallet()
     
     const mintingToken = async() => {
-        // metadataJson(name, symbol, description, imageUrl)
-        // createToken(wallet, connection)
+        setLoading(true)
+        const res = await metadataJson(name, symbol, description, imageUrl)
+        const metUrl = res.cloud.url
+        console.log(res.cloud.url)
+        const mintPubKey = createToken(wallet, connection, name, symbol, metUrl, decimals, supply)
+        setPubKey(mintPubKey)
+        setTimeout(() => {setLoading(false)}, 3000)
         console.log("mintingToken")
     }
 
     return (
-        <form className="shadow-lg p-8 rounded-lg flex flex-col gap-5 justify-center items-center h-auto w-auto mt-24 ">
-            <div className="flex gap-3">
-                <LableAndInput title = "Name" inputType = "text" setFun = {setName} inputValue = {name} maxLen={25} />
-                <LableAndInput title = "Symbol" inputType = "text" setFun = {setSymbol} inputValue = {symbol} maxLen={5}/>
-            </div>
-            <div className="flex gap-3">
-                <LableAndInput title = "Decimal" min={0} inputType = "number" setFun = {setDecimals} inputValue = {decimals} className="h-8" />
-                <LableAndInput title = "Supply" min={0} inputType = "number" setFun = {setSupply} inputValue = {supply} className="h-8"/>
-            </div>
-            {/* <div className="flex gap-3">
-            </div> */}
-                    <LableAndInput title = "Description" inputType = "text" setFun = {setDescription} inputValue = {description} className="h-20 w-full"/>
-                    <LableAndInput title = "Image URL" inputType = "text" setFun = {setImageUrl} inputValue = {imageUrl} className="h-8 w-full"/>
-            <div className="flex gap-3">
-
-            </div>
-            {(wallet?.publicKey && name !== "" && symbol !== "") ?
-                <div className="flex flex-col items-center group">
-                    <button type="button" className="border-2 border-black p-4" onClick={mintingToken}>
-                        Create Token
-                    </button>
-                    {
-                        imageUrl === "" && <span className="scale-0 text-pretty text-xl font-serif bg-gray-50 p-2 
-                                    rounded-md shadow-md 
-                                    group-hover:scale-100 
-                                    origin-top transition-all 
-                                    ease-in-out">Please ensure to upload your Image URL!</span>
-                    }
+        <>
+        {!loading ?    
+            
+            <form className="shadow-lg p-8 rounded-lg flex flex-col gap-5 justify-center items-center h-auto w-auto mt-24 ">
+                <div className="flex gap-3">
+                    <LableAndInput title = "Name" inputType = "text" setFun = {setName} inputValue = {name} maxLen={25} />
+                    <LableAndInput title = "Symbol" inputType = "text" setFun = {setSymbol} inputValue = {symbol} maxLen={5}/>
                 </div>
-                 : ""}
-        </form>
+                <div className="flex gap-3">
+                    <LableAndInput title = "Decimal" min={0} inputType = "number" setFun = {setDecimals} inputValue = {decimals} className="h-8" />
+                    <LableAndInput title = "Supply" min={0} inputType = "number" setFun = {setSupply} inputValue = {supply} className="h-8"/>
+                </div>
+                {/* <div className="flex gap-3">
+                </div> */}
+                        <LableAndInput title = "Description" inputType = "text" setFun = {setDescription} inputValue = {description} className="h-20 w-full"/>
+                        <LableAndInput title = "Image URL" inputType = "text" setFun = {setImageUrl} inputValue = {imageUrl} className="h-8 w-full"/>
+                <div className="flex gap-3">
+    
+                </div>
+                {(wallet?.publicKey && name !== "" && symbol !== "") ?
+                    <>
+                    <div className="flex flex-col items-center group h-0 ">
+                        {
+                            imageUrl === "" && <span className="relative bottom-10 scale-0 text-pretty text-xl font-serif bg-gray-50 p-2 
+                                        rounded-md shadow-md z-50
+                                        group-hover:scale-100 
+                                        origin-center transition-all 
+                                        ease-in-out duration-200 h-24">Please ensure to upload your Image URL!</span>
+                        }
+                        <button type="button" className="fixed bottom-72 font-serif text-xl
+                        shadow-md rounded-3xl p-3 
+                        hover:rounded-lg transition-all hover:bg-gray-100 hover:shadow-xl duration-200
+                        " onClick={mintingToken}>
+                            Create Token
+                        </button>
+                    </div>
+                    {pubKey ? <div>
+                        <div className="text-pretty w-52 text-xl font-serif font-medium ">Token mint public key is</div>
+                        <div > {pubKey}</div>
+                    </div> : ""}
+                    </>
+                     : ""}
+            </form>
+            
+            : <div className="absolute top-1/2 left-1/2"><RingLoader size={100}/></div> }
+        </>
     )
 }
 
@@ -89,7 +109,7 @@ const LableAndInput : React.FC<propsType> = ({title, inputType, setFun,
                     value={inputValue}
                     className={className0}
                     />
-        </div>
+        </div>  
         </>
     )
 }

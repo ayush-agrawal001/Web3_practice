@@ -20,7 +20,9 @@ export default async function metadataJson(name : string, symbol : string, descr
         body: JSON.stringify(data)
     })
     
-    console.log(response.json())
+    const result = response.json()
+    console.log(result)
+    return result
 }
 
 
