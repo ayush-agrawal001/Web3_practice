@@ -15,7 +15,7 @@ export default async function metadataJson(name : string, symbol : string, descr
         method: 'POST',
         headers: {
             'Accept': 'application/json',
-            'Api-Key': process.env.API_KEY,
+            'Api-Key': process.env.NEXT_PUBLIC_API_KEY,
             'Content-Type': 'text/plain'
         },
         body: JSON.stringify(data)
